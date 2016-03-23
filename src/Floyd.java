@@ -2,6 +2,11 @@
 import java.util.Scanner;
 
 /**
+ * Neal Friedman
+ * CS 4050
+ * Ex 11
+ *
+ *
  * Your program must ask the user, from the keyboard, for the defining information for
  * a directed graph, in precisely this order: number of vertices, followed by the weights,
  * row by row and column by column, where -1 is used to indicate that there is no edge between
