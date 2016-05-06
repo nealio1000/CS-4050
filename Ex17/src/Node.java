@@ -57,9 +57,9 @@ class Node implements Comparable<Node>{
   @Override
   public int compareTo(Node other) {
     if(this.bound < other.bound)
-      return -1;
-    if(this.bound > other.bound)
       return 1;
+    if(this.bound > other.bound)
+      return -1;
     return 0;
   }
 }
