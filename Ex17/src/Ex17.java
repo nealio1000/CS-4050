@@ -10,6 +10,9 @@
 
 public class Ex17 {
   public static void main (String[] args){
-    KnapSackProblem knapSackProblem = new KnapSackProblem();
+    KnapSackProblem knapSackProblemEx9 = new KnapSackProblem();
+    knapSackProblemEx9.solveWithBranchAndBound();
+    KnapSackProblem knapSackProblemTest2 = new KnapSackProblem("test2");
+    knapSackProblemTest2.solveWithBranchAndBound();
   }
 }

@@ -1,10 +1,10 @@
 import java.util.Comparator;
 
 class Item {
-  private static int currentId = 0;
+  static int currentId = 0;
   int profit;
   int weight;
-  private int id;
+  int id;
   private double profitWeightRatio;
 
   /**

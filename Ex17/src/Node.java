@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Node implements Comparable<Node>{
-  private static int currentId = 0;
+  static int currentId = 0;
   List<Item> items;
   int level;
   int profit;
@@ -42,38 +42,10 @@ class Node implements Comparable<Node>{
             " bound: " + bound +">";
   }
 
-  /**
-   * Starting at the current tree depth, compute the bound of this node.
-   * @return the bound
-   */
-  double computeBound() {
-    bound = profit;
-    int w = weight;
-    Item item;
-//    for(int i = level; i < KnapSackProblem.numOfItems; i++){
-//      item = KnapSackProblem.itemList.get(i);
-//      if(item != null) {
-//        if (weight + item.weight > KnapSackProblem.capacity)
-//          break;
-//        w += item.weight;
-//        bound += item.profit;
-//      }
-//    }
-    int i = level;
-    do {
-      item = KnapSackProblem.itemList.get(i);
-      if (w + item.weight > KnapSackProblem.capacity)
-        break;
-      w += item.weight;
-      bound += item.profit;
-      i++;
-    } while (i < KnapSackProblem.numOfItems);
-
-
-    bound += (KnapSackProblem.capacity - w) * (item.profit/ item.weight);
-
-    return bound;
+  void setBound(double bound) {
+    this.bound = bound;
   }
+
 
   /**
    * Compare this node with some other node based on the node's bound

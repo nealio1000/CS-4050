@@ -3,9 +3,9 @@ import java.io.FileReader;
 import java.util.*;
 
 class KnapSackProblem {
-  static int capacity;
-  static int numOfItems;
-  static List<Item> itemList = new ArrayList<>();
+  private int capacity;
+  private int numOfItems;
+  private List<Item> itemList = new ArrayList<>();
   private Node currentBest;
   private PriorityQueue<Node> pq;
 
@@ -33,7 +33,7 @@ class KnapSackProblem {
    *
    * @param filename 0-1 knapsack data file
    */
-  public KnapSackProblem(String filename){
+  KnapSackProblem(String filename) {
     Scanner scanner = null;
     try {
       scanner = new Scanner(new FileReader(filename));
@@ -59,7 +59,7 @@ class KnapSackProblem {
     Collections.sort(itemList, Item.byRatio());
     Node root = new Node();
     currentBest = root;
-    root.computeBound();
+    root.setBound(computeBound(root));
     pq = new PriorityQueue<>();
     pq.offer(root);
   }
@@ -72,6 +72,10 @@ class KnapSackProblem {
     while (!pq.isEmpty())
       exploreNode(pq.poll());
     System.out.println("\n\nBest node is: " + currentBest.toString());
+
+    //reset NodeIds and ItemIds for next run
+    Node.currentId = 0;
+    Item.currentId = 0;
   }
 
   /**
@@ -80,11 +84,11 @@ class KnapSackProblem {
    * @param items the item list to print
    */
   private void printItemList(List<Item> items){
-    System.out.println("Capacity of knapsack is " + capacity);
+    System.out.println("\n\n-----------------------------------------------------------------------------------------");
+    System.out.println("\nCapacity of knapsack is " + capacity);
     System.out.println("Items are:");
-    for(int i = 0; i < itemList.size(); i++) {
-      Item item = itemList.get(i);
-      System.out.println(i + 1 + ": " + item.profit + " " + item.weight);
+    for (Item item : items) {
+      System.out.println(item.id + ": " + item.profit + " " + item.weight);
     }
   }
 
@@ -114,7 +118,7 @@ class KnapSackProblem {
     with.weight += item.weight;
     with.items.add(itemList.get(parent.level));
     with.profit += item.profit;
-    with.computeBound();
+    with.setBound(computeBound(with));
     System.out.println("\tRight child is: " + with.toString());
 
     if (with.weight <= capacity) {
@@ -137,12 +141,37 @@ class KnapSackProblem {
    */
   private void exploreNodeWithoutItem(Node parent) {
     Node without = new Node(parent);
-    without.computeBound();
+    without.setBound(computeBound(without));
     System.out.println("\tLeft child is: " + without.toString());
 
     if (without.bound > currentBest.profit) {
       pq.offer(without);
       System.out.println("\t\texplore further");
     }
+  }
+
+  /**
+   * Starting at the current tree depth, compute the bound of this node.
+   *
+   * @return the bound
+   */
+  private double computeBound(Node node) {
+    double bound = node.profit;
+    int w = node.weight;
+    Item item;
+
+    int i = node.level;
+    do {
+      item = itemList.get(i);
+      if (w + item.weight > capacity)
+        break;
+      w += item.weight;
+      bound += item.profit;
+      i++;
+    } while (i < numOfItems);
+
+    bound += (capacity - w) * (item.profit / item.weight);
+
+    return bound;
   }
 }
