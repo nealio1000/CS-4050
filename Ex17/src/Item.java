@@ -4,20 +4,19 @@ import java.util.Comparator;
  * Created by neal on 5/5/16.
  */
 public class Item {
-  public static int profit;
-  public static int weight;
-  public static double profitWeightRatio;
+  private static int currentId = 0;
+  public int id;
+  public int profit;
+  public int weight;
+  public double profitWeightRatio;
 
   @Override
   public String toString() {
-    return "Item{" +
-            "profit=" + profit +
-            ", weight=" + weight +
-            ", profitWeightRatio=" + profitWeightRatio +
-            '}';
+    return  String.valueOf(id);
   }
 
   public Item(int profit, int weight){
+    currentId++; this.id = currentId;
     this.profit = profit;
     this.weight = weight;
     profitWeightRatio = profit / weight;
