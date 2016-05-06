@@ -79,18 +79,36 @@ class KnapSackProblem {
       System.out.println("Exploring: " + node.toString());
       if (node.bound > currentBest.profit && node.level < itemList.size() - 1) {
 
+
+
+        Node without = new Node(node);
+        without.computeBound();
+        System.out.println("\tLeft child is: " + without.toString());
+
+        if (without.bound > currentBest.profit) {
+          pq.offer(without);
+          System.out.println("\t\texplore further");
+        }
+        else
+          System.out.println("\t\tpruned, don't explore children because bound " + without.bound +
+                              " is smaller than known achievable profit " + currentBest.profit);
+
+
+
         Node with = new Node(node);
         Item item = itemList.get(node.level);
         with.weight += item.weight;
         with.items.add(itemList.get(node.level));
         with.profit += item.profit;
         with.computeBound();
-        System.out.println("\tLeft child is: " + with.toString());
+        System.out.println("\tRight" +
+                "" +
+                " child is: " + with.toString());
 
         if (with.weight <= capacity) {
           if (with.profit > currentBest.profit) {
             currentBest = with;
-            System.out.println("\t\tnote achievable proit of " + currentBest.profit);
+            System.out.println("\t\tnote achievable profit of " + currentBest.profit);
           }
           if (with.bound > currentBest.profit) {
             pq.offer(with);
@@ -102,23 +120,9 @@ class KnapSackProblem {
         }
         else
           System.out.println("\t\tpruned because too heavy");
-
-        Node without = new Node(node);
-        without.computeBound();
-        System.out.println("\tRight child is: " + without.toString());
-
-        if (without.bound > currentBest.profit) {
-          pq.offer(without);
-          System.out.println("\t\texplore further");
-        }
-        else
-          System.out.println("\t\tpruned, don't explore children because bound " + without.bound +
-                              " is smaller than known achievable profit " + currentBest.profit);
       }
     }
 
     System.out.println("\n\n The best node is: " + currentBest.toString());
-
-
   }
 }
