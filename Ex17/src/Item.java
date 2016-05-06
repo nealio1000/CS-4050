@@ -1,16 +1,25 @@
+import java.util.Comparator;
+
 /**
  * Created by neal on 5/5/16.
  */
 public class Item {
-  private int profit;
-  private int weight;
-  private int capacity;
-  private int profitWeightRatio;
+  public int profit;
+  public int weight;
+  public double profitWeightRatio;
+
+  @Override
+  public String toString() {
+    return "Item{" +
+            "profit=" + profit +
+            ", weight=" + weight +
+            ", profitWeightRatio=" + profitWeightRatio +
+            '}';
+  }
 
   public Item(int profit, int weight, int capacity){
     this.profit = profit;
     this.weight = weight;
-    this.capacity = capacity;
     profitWeightRatio = profit / weight;
   }
 
@@ -30,15 +39,16 @@ public class Item {
     this.weight = weight;
   }
 
-  public int getProfitWeightRatio() {
+  public double getProfitWeightRatio() {
     return profitWeightRatio;
   }
 
-  @Override
-  public String toString() {
-    return "Item{" +
-            "profit=" + profit +
-            ", weight=" + weight +
-            '}';
+  public static Comparator<Item> byRatio() {
+    return new Comparator<Item>() {
+      public int compare(Item item1, Item item2) {
+        return Double.compare(item2.getProfitWeightRatio(), item1.getProfitWeightRatio());
+      }
+    };
   }
+
 }
