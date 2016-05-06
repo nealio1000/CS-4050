@@ -1,10 +1,6 @@
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Scanner;
+import java.util.*;
 
 class KnapSackProblem {
   static int capacity;
@@ -56,7 +52,7 @@ class KnapSackProblem {
   }
 
   /**
-   * Solve 0-1 Knapsack using branch and bound
+   * Initialize problem with root node and sort item list by price/weight ratio
    */
   private void init(){
     printItemList(itemList);
@@ -75,6 +71,11 @@ class KnapSackProblem {
     System.out.println("\n\nBest node is: " + currentBest.toString());
   }
 
+  /**
+   * Print the item list
+   *
+   * @param items the item list to print
+   */
   private void printItemList(List<Item> items){
     System.out.println("Capacity of knapsack is " + capacity);
     System.out.println("Items are:");
@@ -84,6 +85,11 @@ class KnapSackProblem {
     }
   }
 
+  /**
+   * Explore a node's left and right child where the left child is the node without the item
+   * and the right child is the node with the item
+   * @param node the node to explore
+   */
   private void exploreNode(Node node){
     System.out.println("\nExploring: " + node.toString());
     if (node.bound > currentBest.profit && node.level < itemList.size() - 1) {

@@ -2,16 +2,17 @@ import java.util.Comparator;
 
 class Item {
   private static int currentId = 0;
-  private int id;
   int profit;
   int weight;
+  private int id;
   private double profitWeightRatio;
 
-  @Override
-  public String toString() {
-    return  String.valueOf(id);
-  }
-
+  /**
+   * Construct an Item
+   *
+   * @param profit the item's profit
+   * @param weight the item's weight
+   */
   Item(int profit, int weight){
     currentId++; this.id = currentId;
     this.profit = profit;
@@ -19,11 +20,25 @@ class Item {
     profitWeightRatio = profit / weight;
   }
 
-  private double getProfitWeightRatio() {
-    return profitWeightRatio;
-  }
-
+  /**
+   * Comparator method for sorting items by profit/weight ratio
+   * @return the item with the larger profit/weight ratio
+   */
   static Comparator<Item> byRatio() {
     return (item1, item2) -> Double.compare(item2.getProfitWeightRatio(), item1.getProfitWeightRatio());
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(id);
+  }
+
+  /**
+   * Return the ratio of profit to weight of this item
+   *
+   * @return the profit/weight ratio
+   */
+  private double getProfitWeightRatio() {
+    return profitWeightRatio;
   }
 }
