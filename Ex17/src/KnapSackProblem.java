@@ -10,6 +10,8 @@ class KnapSackProblem {
   static int capacity;
   static int numOfItems;
   static List<Item> itemList = new ArrayList<>();
+  private Node currentBest;
+  private PriorityQueue<Node> pq;
 
   /**
    * Constructor for Knapsack Problem w/ canned Ex9 data
@@ -25,9 +27,9 @@ class KnapSackProblem {
       capacity = scanner.nextInt();
       numOfItems = scanner.nextInt();
       for(int i = 0; i < numOfItems; i++)
-        itemList.add(new Item(scanner.nextInt(),scanner.nextInt()));
+        itemList.add(new Item(scanner.nextInt(), scanner.nextInt()));
 
-      this.start();
+      this.init();
     }
   }
 
@@ -49,71 +51,75 @@ class KnapSackProblem {
       for(int i = 0; i < numOfItems; i++)
         itemList.add(new Item(scanner.nextInt(),scanner.nextInt()));
 
-      this.start();
+      this.init();
     }
   }
 
   /**
    * Solve 0-1 Knapsack using branch and bound
    */
-  private void start(){
+  private void init(){
+    printItemList(itemList);
 
+    Collections.sort(itemList, Item.byRatio());
+    Node root = new Node();
+    currentBest = root;
+    root.computeBound();
+    pq = new PriorityQueue<>();
+    pq.offer(root);
+
+    System.out.println("\nBegin exploration of the possibilities tree:");
+    while(!pq.isEmpty())
+      exploreNode(pq.poll());
+
+    System.out.println("\n\nBest node is: " + currentBest.toString());
+  }
+
+  private void printItemList(List<Item> items){
     System.out.println("Capacity of knapsack is " + capacity);
     System.out.println("Items are:");
     for(int i = 0; i < itemList.size(); i++) {
       Item item = itemList.get(i);
       System.out.println(i + 1 + ": " + item.profit + " " + item.weight);
     }
-    System.out.println("\nBegin exploration of the possibilities tree:");
+  }
 
-    Collections.sort(itemList, Item.byRatio());
-    Node root = new Node();
-    Node currentBest = root;
-    root.computeBound();
+  private void exploreNode(Node node){
+    System.out.println("\nExploring: " + node.toString());
+    if (node.bound > currentBest.profit && node.level < itemList.size() - 1) {
 
-    PriorityQueue<Node> pq = new PriorityQueue<>();
-    pq.offer(root);
+      Node without = new Node(node);
+      without.computeBound();
+      System.out.println("\tLeft child is: " + without.toString());
 
-    while(!pq.isEmpty()){
-      Node node = pq.poll();
-      System.out.println("\nExploring: " + node.toString());
-      if (node.bound > currentBest.profit && node.level < itemList.size() - 1) {
+      if (without.bound > currentBest.profit) {
+        pq.offer(without);
+        System.out.println("\t\texplore further");
+      }
 
-        Node without = new Node(node);
-        without.computeBound();
-        System.out.println("\tLeft child is: " + without.toString());
+      Node with = new Node(node);
+      Item item = itemList.get(node.level);
+      with.weight += item.weight;
+      with.items.add(itemList.get(node.level));
+      with.profit += item.profit;
+      with.computeBound();
+      System.out.println("\tRight child is: " + with.toString());
 
-        if (without.bound > currentBest.profit) {
-          pq.offer(without);
-          System.out.println("\t\texplore further");
+      if (with.weight <= capacity) {
+        System.out.println("\t\texplore further");
+        if (with.profit > currentBest.profit) {
+          currentBest = with;
+          System.out.println("\t\tnote achievable profit of " + currentBest.profit);
         }
-
-        Node with = new Node(node);
-        Item item = itemList.get(node.level);
-        with.weight += item.weight;
-        with.items.add(itemList.get(node.level));
-        with.profit += item.profit;
-        with.computeBound();
-        System.out.println("\tRight child is: " + with.toString());
-
-        if (with.weight <= capacity) {
-          System.out.println("\t\texplore further");
-          if (with.profit > currentBest.profit) {
-            currentBest = with;
-            System.out.println("\t\tnote achievable profit of " + currentBest.profit);
-          }
-          if (with.bound > currentBest.profit) {
-            pq.offer(with);
-          }
+        if (with.bound > currentBest.profit) {
+          pq.offer(with);
         }
-        else
-          System.out.println("\t\tpruned because too heavy");
       }
       else
-        System.out.println("\t\tpruned, don't explore children because bound " + node.bound +
-                  " is smaller than known achievable profit " + currentBest.profit);
+        System.out.println("\t\tpruned because too heavy");
     }
-
-    System.out.println("\n\n The best node is: " + currentBest.toString());
+    else
+      System.out.println("\t\tpruned, don't explore children because bound " + node.bound +
+              " is smaller than known achievable profit " + currentBest.profit);
   }
 }
