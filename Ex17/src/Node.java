@@ -1,21 +1,21 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Node implements Comparable<Node>{
-  public List<Item> items;
+class Node implements Comparable<Node>{
+  List<Item> items;
   private static int currentId = 0;
-  public int id;
-  public int level;
-  public int profit;
-  public int weight;
-  public int bound;
+  private int id;
+  int level;
+  int profit;
+  int weight;
+  int bound;
 
-  public Node(){
+  Node(){
     currentId++; this.id = currentId;
     this.items = new ArrayList<>();
   }
 
-  public Node(Node parentNode){
+  Node(Node parentNode){
     currentId++; this.id = currentId;
     this.level = parentNode.level + 1;
     this.items = new ArrayList<>(parentNode.items);
@@ -34,7 +34,7 @@ public class Node implements Comparable<Node>{
             " bound: " + bound +">";
   }
 
-  public int computeBound() {
+  int computeBound() {
     bound = profit;
     int w = weight;
     Item item = null;

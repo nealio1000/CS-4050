@@ -6,28 +6,29 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
-public class KnapSackProblem {
-  public static int capacity;
-  public static int numOfItems;
-  public static List<Item> itemList = new ArrayList<>();
+class KnapSackProblem {
+  static int capacity;
+  static int numOfItems;
+  static List<Item> itemList = new ArrayList<>();
 
   /**
    * Constructor for Knapsack Problem w/ canned Ex9 data
    */
-  public KnapSackProblem(){
+  KnapSackProblem(){
     Scanner scanner = null;
     try {
       scanner = new Scanner(new FileReader("ex9"));
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
-    this.capacity = scanner.nextInt();
-    this.numOfItems = scanner.nextInt();
+    if (scanner != null) {
+      capacity = scanner.nextInt();
+      numOfItems = scanner.nextInt();
+      for(int i = 0; i < numOfItems; i++)
+        itemList.add(new Item(scanner.nextInt(),scanner.nextInt()));
 
-    for(int i = 0; i < numOfItems; i++)
-      itemList.add(new Item(scanner.nextInt(),scanner.nextInt()));
-
-    this.start();
+      this.start();
+    }
   }
 
   /** Constructor for Knapsack problem w/ specified data file
@@ -41,19 +42,21 @@ public class KnapSackProblem {
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
-    this.capacity = scanner.nextInt();
-    this.numOfItems = scanner.nextInt();
 
-    for(int i = 0; i < numOfItems; i++)
-      itemList.add(new Item(scanner.nextInt(),scanner.nextInt()));
+    if (scanner != null) {
+      capacity = scanner.nextInt();
+      numOfItems = scanner.nextInt();
+      for(int i = 0; i < numOfItems; i++)
+        itemList.add(new Item(scanner.nextInt(),scanner.nextInt()));
 
-    this.start();
+      this.start();
+    }
   }
 
   /**
    * Solve 0-1 Knapsack using branch and bound
    */
-  public void start(){
+  private void start(){
 
     System.out.println("Capacity of knapsack is " + capacity);
     System.out.println("Items are:");
