@@ -64,7 +64,7 @@ class KnapSackProblem {
       Item item = itemList.get(i);
       System.out.println(i + 1 + ": " + item.profit + " " + item.weight);
     }
-    System.out.println("\nBegin exploration of the possibilities tree:\n");
+    System.out.println("\nBegin exploration of the possibilities tree:");
 
     Collections.sort(itemList, Item.byRatio());
     Node root = new Node();
@@ -76,7 +76,7 @@ class KnapSackProblem {
 
     while(!pq.isEmpty()){
       Node node = pq.poll();
-      System.out.println("Exploring: " + node.toString());
+      System.out.println("\nExploring: " + node.toString());
       if (node.bound > currentBest.profit && node.level < itemList.size() - 1) {
 
         Node without = new Node(node);
@@ -94,18 +94,16 @@ class KnapSackProblem {
         with.items.add(itemList.get(node.level));
         with.profit += item.profit;
         with.computeBound();
-        System.out.println("\tRight" +
-                "" +
-                " child is: " + with.toString());
+        System.out.println("\tRight child is: " + with.toString());
 
         if (with.weight <= capacity) {
+          System.out.println("\t\texplore further");
           if (with.profit > currentBest.profit) {
             currentBest = with;
             System.out.println("\t\tnote achievable profit of " + currentBest.profit);
           }
           if (with.bound > currentBest.profit) {
             pq.offer(with);
-            System.out.println("\t\texplore further");
           }
         }
         else

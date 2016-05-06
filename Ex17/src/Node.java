@@ -8,7 +8,7 @@ class Node implements Comparable<Node>{
   int level;
   int profit;
   int weight;
-  int bound;
+  double bound;
 
   Node(){
     currentId++; this.id = currentId;
@@ -26,7 +26,7 @@ class Node implements Comparable<Node>{
 
   @Override
   public String toString() {
-    return "<Node " + id + ":    " +
+    return "<Node " + id + ":   " +
             " items: " + items +
             " level: " + level +
             " profit: " + profit +
@@ -34,22 +34,30 @@ class Node implements Comparable<Node>{
             " bound: " + bound +">";
   }
 
-  int computeBound() {
+  double computeBound() {
     bound = profit;
     int w = weight;
-    Item item = null;
-    for(int i = level; i < KnapSackProblem.numOfItems; i++){
+    Item item;
+//    for(int i = level; i < KnapSackProblem.numOfItems; i++){
+//      item = KnapSackProblem.itemList.get(i);
+//      if(item != null) {
+//        if (weight + item.weight > KnapSackProblem.capacity)
+//          break;
+//        w += item.weight;
+//        bound += item.profit;
+//      }
+//    }
+    int i = level;
+    do {
       item = KnapSackProblem.itemList.get(i);
-      if(item != null) {
-        if (weight + item.weight > KnapSackProblem.capacity)
-          break;
-        w += item.weight;
-        bound += item.profit;
-      }
-    }
+      if (w + item.weight > KnapSackProblem.capacity) break;
+      w += item.weight;
+      bound += item.profit;
+      i++;
+    } while (i < KnapSackProblem.numOfItems);
 
-    if(item != null)
-      bound += (KnapSackProblem.capacity - w) * (item.profit/ item.weight);
+
+    bound += (KnapSackProblem.capacity - w) * (item.profit/ item.weight);
 
     return bound;
   }
