@@ -1,11 +1,14 @@
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Scanner;
 
 public class KnapSackProblem {
   public static int capacity;
-
-  private int numOfItems;
+  public static int numOfItems;
   public static List<Item> itemList = new ArrayList<>();
 
   public KnapSackProblem(){
@@ -19,7 +22,7 @@ public class KnapSackProblem {
     this.numOfItems = scanner.nextInt();
 
     for(int i = 0; i < numOfItems; i++)
-      itemList.add(new Item(scanner.nextInt(),scanner.nextInt(), capacity));
+      itemList.add(new Item(scanner.nextInt(),scanner.nextInt()));
 
     this.start();
   }
@@ -34,7 +37,7 @@ public class KnapSackProblem {
     this.numOfItems = scanner.nextInt();
 
     for(int i = 0; i < numOfItems; i++)
-      itemList.add(new Item(scanner.nextInt(),scanner.nextInt(), capacity));
+      itemList.add(new Item(scanner.nextInt(),scanner.nextInt()));
 
     this.start();
   }
@@ -42,7 +45,7 @@ public class KnapSackProblem {
   public void start(){
     Collections.sort(itemList, Item.byRatio());
     Node root = new Node();
-    Node best = new Node();
+    Node currentBest = new Node();
     root.computeBound();
 
     PriorityQueue<Node> pq = new PriorityQueue<>();
@@ -50,7 +53,7 @@ public class KnapSackProblem {
 
     while(!pq.isEmpty()){
       Node node = pq.poll();
-      if (node.bound > best.profit && node.height < itemList.size() - 1) {
+      if (node.bound > currentBest.profit && node.height < itemList.size() - 1) {
 
         Node with = new Node(node);
         Item item = itemList.get(node.height);
@@ -62,10 +65,10 @@ public class KnapSackProblem {
           with.profit += item.profit;
           with.computeBound();
 
-          if (with.profit > best.profit) {
-            best = with;
+          if (with.profit > currentBest.profit) {
+            currentBest = with;
           }
-          if (with.bound > best.profit) {
+          if (with.bound > currentBest.profit) {
             pq.offer(with);
           }
         }
@@ -73,13 +76,10 @@ public class KnapSackProblem {
         Node without = new Node(node);
         without.computeBound();
 
-        if (without.bound > best.profit) {
+        if (without.bound > currentBest.profit) {
           pq.offer(without);
         }
       }
     }
-
-    int breakhere = 1;
-
   }
 }

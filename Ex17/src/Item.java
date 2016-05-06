@@ -4,9 +4,9 @@ import java.util.Comparator;
  * Created by neal on 5/5/16.
  */
 public class Item {
-  public int profit;
-  public int weight;
-  public double profitWeightRatio;
+  public static int profit;
+  public static int weight;
+  public static double profitWeightRatio;
 
   @Override
   public String toString() {
@@ -17,26 +17,10 @@ public class Item {
             '}';
   }
 
-  public Item(int profit, int weight, int capacity){
+  public Item(int profit, int weight){
     this.profit = profit;
     this.weight = weight;
     profitWeightRatio = profit / weight;
-  }
-
-  public int getProfit() {
-    return profit;
-  }
-
-  public void setProfit(int profit) {
-    this.profit = profit;
-  }
-
-  public int getWeight() {
-    return weight;
-  }
-
-  public void setWeight(int weight) {
-    this.weight = weight;
   }
 
   public double getProfitWeightRatio() {
@@ -50,5 +34,4 @@ public class Item {
       }
     };
   }
-
 }

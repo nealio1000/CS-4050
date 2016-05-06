@@ -1,7 +1,5 @@
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-
 
 public class Node implements Comparable<Node>{
   public List<Item> items;
@@ -12,9 +10,13 @@ public class Node implements Comparable<Node>{
   public int weight;
   public int bound;
 
-  public Node(){this.items = new ArrayList<>();}
+  public Node(){
+    currentId++; this.id = currentId;
+    this.items = new ArrayList<>();
+  }
 
   public Node(Node parentNode){
+    currentId++; this.id = currentId;
     this.height = parentNode.height + 1;
     this.items = new ArrayList<Item>(parentNode.items);
     this.bound = parentNode.bound;
@@ -37,7 +39,7 @@ public class Node implements Comparable<Node>{
     bound = profit;
     int w = weight;
     Item item = null;
-    for(int i = height; i < KnapSackProblem.itemList.size(); i++){
+    for(int i = height; i < KnapSackProblem.numOfItems; i++){
       item = KnapSackProblem.itemList.get(i);
       if(item != null) {
         if (weight + item.weight > KnapSackProblem.capacity)
