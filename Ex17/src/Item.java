@@ -35,13 +35,16 @@ class Item {
     profitWeightRatio = profit / weight;
   }
 
+  // This can be uncommented and replace the other Comparator if you are using
+  // Java version 1.8 or higher.
+//  static Comparator<Item> byRatio() {
+//    return (item1, item2) -> Double.compare(item2.getProfitWeightRatio(), item1.getProfitWeightRatio());
+//  }
+
   /**
    * Comparator method for sorting items by profit/weight ratio
    * @return the item with the larger profit/weight ratio
    */
-//  static Comparator<Item> byRatio() {
-//    return (item1, item2) -> Double.compare(item2.getProfitWeightRatio(), item1.getProfitWeightRatio());
-//  }
   static Comparator<Item> byRatio() {
     return new Comparator<Item>() {
       public int compare(Item item1, Item item2) {
