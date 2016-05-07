@@ -42,14 +42,13 @@ class Item {
 //  static Comparator<Item> byRatio() {
 //    return (item1, item2) -> Double.compare(item2.getProfitWeightRatio(), item1.getProfitWeightRatio());
 //  }
-  public static Comparator<Item> byRatio() {
+  static Comparator<Item> byRatio() {
     return new Comparator<Item>() {
       public int compare(Item item1, Item item2) {
-        return Double.compare(item2.getProfitWeightRatio(), item2.getProfitWeightRatio());
+        return Double.compare(item2.getProfitWeightRatio(), item1.getProfitWeightRatio());
       }
     };
   }
-
 
   @Override
   public String toString() {
