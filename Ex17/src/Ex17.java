@@ -5,14 +5,28 @@
  * 0-1 Knapsack Problem
  * Branch & Bound Solution
  *
+ * Instructions:
+ *
+ * javac *.java
+ * java Ex17 <optional_data_file_argument>
+ *
  * By Neal Friedman and Brunno Putnam
  */
 
 public class Ex17 {
   public static void main (String[] args){
-    KnapSackProblem knapSackProblemEx9 = new KnapSackProblem();
-    knapSackProblemEx9.solveWithBranchAndBound();
-    KnapSackProblem knapSackProblemTest2 = new KnapSackProblem("test2");
-    knapSackProblemTest2.solveWithBranchAndBound();
+    String fname = "";
+    if( args.length != 1 )
+      fname = FileBrowser.chooseFile( true );
+    else
+      fname = args[0];
+
+    if(!fname.equals("")) {
+      KnapSackProblem knapSackProblem = new KnapSackProblem(fname);
+      knapSackProblem.solveWithBranchAndBound();
+    }
+    else
+      System.out.println("***ERROR*** Please select a file with the file browser or pass one in \nas a program argument");
+
   }
 }

@@ -1,3 +1,18 @@
+/**
+ * CS 4050
+ * Exercise 17
+ *
+ * 0-1 Knapsack Problem
+ * Branch & Bound Solution
+ *
+ * Instructions:
+ *
+ * javac *.java
+ * java Ex17 <optional_data_file_argument>
+ *
+ * By Neal Friedman and Brunno Putnam
+ */
+
 import java.util.Comparator;
 
 class Item {

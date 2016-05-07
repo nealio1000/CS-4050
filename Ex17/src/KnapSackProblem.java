@@ -1,3 +1,18 @@
+/**
+ * CS 4050
+ * Exercise 17
+ *
+ * 0-1 Knapsack Problem
+ * Branch & Bound Solution
+ *
+ * Instructions:
+ *
+ * javac *.java
+ * java Ex17 <optional_data_file_argument>
+ *
+ * By Neal Friedman and Brunno Putnam
+ */
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.*;
@@ -157,20 +172,19 @@ class KnapSackProblem {
    */
   private double computeBound(Node node) {
     double bound = node.profit;
-    int w = node.weight;
+    int startWeight = node.weight;
     Item item;
 
     int i = node.level;
     do {
       item = itemList.get(i);
-      if (w + item.weight > capacity)
+      if (startWeight + item.weight > capacity)
         break;
-      w += item.weight;
+      startWeight += item.weight;
       bound += item.profit;
       i++;
     } while (i < numOfItems);
-
-    bound += (capacity - w) * (item.profit / item.weight);
+    bound += (capacity - startWeight) * (item.profit / item.weight);
 
     return bound;
   }
