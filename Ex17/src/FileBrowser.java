@@ -5,7 +5,7 @@
 import javax.swing.*;
 import java.io.*;
 
-public class FileBrowser
+class FileBrowser
 {
   private static JFileChooser fileChooser = setup();
 
@@ -28,7 +28,7 @@ public class FileBrowser
   }
 
   // utility to select a file from which to read or write
-  public static String chooseFile( boolean doRead )
+  static String chooseFile(boolean doRead)
   {
     int code;
     if( doRead )
