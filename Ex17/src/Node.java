@@ -49,7 +49,7 @@ class Node implements Comparable<Node>{
 
   @Override
   public String toString() {
-    return "<Node " + id + ":   " +
+    return "<Node " + id + ":" +
             " items: " + items +
             " level: " + level +
             " profit: " + profit +
