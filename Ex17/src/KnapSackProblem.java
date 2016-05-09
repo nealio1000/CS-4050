@@ -86,7 +86,7 @@ class KnapSackProblem {
     System.out.println("\nBegin exploration of the possibilities tree:");
     while (!pq.isEmpty())
       exploreNode(pq.poll());
-    System.out.println("\n\nBest node is: " + currentBest.toString());
+    System.out.println("\nBest node: " + currentBest.toString());
 
     //reset NodeIds and ItemIds for next run
     Node.currentId = 0;
@@ -112,13 +112,13 @@ class KnapSackProblem {
    * @param node the node to explore
    */
   private void exploreNode(Node node){
-    System.out.println("\nExploring: " + node.toString());
+    System.out.println("\nExploring " + node.toString());
     if (node.bound > currentBest.profit && node.level < itemList.size() - 1) {
       exploreNodeWithoutItem(node);
       exploreNodeWithItem(node);
     }
     else
-      System.out.println("\t\tpruned, don't explore children because bound " + node.bound +
+      System.out.println("\tpruned, don't explore children because bound " + node.bound +
               " is smaller than known achievable profit " + currentBest.profit);
   }
 
@@ -128,24 +128,41 @@ class KnapSackProblem {
    * @param parent the parent node
    */
   private void exploreNodeWithItem(Node parent) {
-    Node with = new Node(parent);
+    Node withItem = new Node(parent);
     Item item = itemList.get(parent.level);
-    with.weight += item.weight;
-    with.items.add(itemList.get(parent.level));
-    with.profit += item.profit;
-    with.setBound(computeBound(with));
-    System.out.println("\tRight child is: " + with.toString());
+    withItem.weight += item.weight;
+    withItem.items.add(itemList.get(parent.level));
+    withItem.profit += item.profit;
+	// Forces the bound to use the profit when over cap.
+	if ( withItem.weight > capacity )
+	{
+		withItem.setBound(withItem.profit);
+	}
+    System.out.println("\tRight child is " + withItem.toString());
+	withItem.setBound(computeBound(withItem));
+	
 
-    if (with.weight <= capacity) {
-      System.out.println("\t\texplore further");
-      if (with.profit > currentBest.profit) {
-        currentBest = with;
+    if (withItem.weight == capacity) {
+      System.out.println("\t\thit capacity exactly so don't explore further");
+      if (withItem.profit > currentBest.profit) {
+        currentBest = withItem;	
         System.out.println("\t\tnote achievable profit of " + currentBest.profit);
       }
-      if (with.bound > currentBest.profit) {
-        pq.offer(with);
+      if (withItem.bound > currentBest.profit) {
+        pq.offer(withItem);
       }
-    } else
+    }
+	else if (withItem.weight < capacity) {
+      System.out.println("\t\texplore further");
+      if (withItem.profit > currentBest.profit) {
+        currentBest = withItem;
+        System.out.println("\t\tnote achievable profit of " + currentBest.profit);
+      }
+      if (withItem.bound > currentBest.profit) {
+        pq.offer(withItem);
+      }
+    }
+	else
       System.out.println("\t\tpruned because too heavy");
   }
 
@@ -155,12 +172,12 @@ class KnapSackProblem {
    * @param parent the parent node
    */
   private void exploreNodeWithoutItem(Node parent) {
-    Node without = new Node(parent);
-    without.setBound(computeBound(without));
-    System.out.println("\tLeft child is: " + without.toString());
+    Node withoutItem = new Node(parent);
+    withoutItem.setBound(computeBound(withoutItem));
+    System.out.println("\tLeft child is " + withoutItem.toString());
 
-    if (without.bound > currentBest.profit) {
-      pq.offer(without);
+    if (withoutItem.bound > currentBest.profit) {
+      pq.offer(withoutItem);
       System.out.println("\t\texplore further");
     }
   }
